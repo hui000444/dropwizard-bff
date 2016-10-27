@@ -1,0 +1,537 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://transakt.sg.entersekt.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="api/2.0/transakt" targetNamespace="http://transakt.sg.entersekt.com/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://transakt.sg.entersekt.com/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://transakt.sg.entersekt.com/">
+  <xs:element name="result" type="tns:responseResult"/>
+  <xs:complexType name="multiAuthCommitRq">
+    <xs:sequence>
+      <xs:element name="auth_id" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="multiAuthCommitRs">
+    <xs:complexContent>
+      <xs:extension base="tns:baseResponse">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="baseResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="result" type="tns:responseResult"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="responseResult">
+    <xs:sequence>
+      <xs:element name="code" type="xs:int"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="authRq">
+    <xs:complexContent>
+      <xs:extension base="tns:baseAuthRq">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="attributes" type="tns:attributes"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType abstract="true" name="baseAuthRq">
+    <xs:sequence>
+      <xs:element name="subject_id" type="xs:string"/>
+      <xs:element minOccurs="0" name="auth_type" type="tns:authType"/>
+      <xs:element minOccurs="0" name="external_reference" type="xs:string"/>
+      <xs:element minOccurs="0" name="callback_url" type="xs:string"/>
+      <xs:element minOccurs="0" name="ttl_seconds" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="attributes">
+    <xs:sequence>
+      <xs:element name="push_notify" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="title" type="xs:string"/>
+      <xs:element minOccurs="0" name="text" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="button" type="tns:button"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="value_pair" type="tns:valuePair"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="text_box" type="tns:textBox"/>
+      <xs:element minOccurs="0" name="multi_auth_type" type="tns:multiAuthType"/>
+      <xs:element minOccurs="0" name="parent_auth_id" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="button">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="label" type="xs:string"/>
+      <xs:element minOccurs="0" name="role" type="tns:buttonRole"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="flags" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="valuePair">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+      <xs:element minOccurs="0" name="value" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="textBox">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="label" type="xs:string"/>
+      <xs:element minOccurs="0" name="text" type="xs:string"/>
+      <xs:element name="min_size" type="xs:int"/>
+      <xs:element name="max_size" type="xs:int"/>
+      <xs:element name="constraints" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="authRs">
+    <xs:complexContent>
+      <xs:extension base="tns:baseResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="auth_id" type="xs:string"/>
+          <xs:element minOccurs="0" name="external_reference" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="subjectInfoRq">
+    <xs:sequence>
+      <xs:element name="subject_id" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="subjectInfoRs">
+    <xs:complexContent>
+      <xs:extension base="tns:baseResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="app_version" type="xs:string"/>
+          <xs:element minOccurs="0" name="app_type" type="xs:string"/>
+          <xs:element minOccurs="0" name="os_type" type="xs:string"/>
+          <xs:element minOccurs="0" name="os_version" type="xs:string"/>
+          <xs:element minOccurs="0" name="os_privilege" type="xs:string"/>
+          <xs:element minOccurs="0" name="device_make" type="xs:string"/>
+          <xs:element minOccurs="0" name="device_model" type="xs:string"/>
+          <xs:element minOccurs="0" name="registered" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="otpVerifyRq">
+    <xs:sequence>
+      <xs:element name="subject_id" type="xs:string"/>
+      <xs:element name="otp" type="xs:string"/>
+      <xs:element minOccurs="0" name="pin" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="otpVerifyRs">
+    <xs:complexContent>
+      <xs:extension base="tns:baseResponse">
+        <xs:sequence>
+          <xs:element name="valid" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="trustTokenVerifyRq">
+    <xs:sequence>
+      <xs:element name="trust_token" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="trustTokenVerifyRs">
+    <xs:complexContent>
+      <xs:extension base="tns:baseResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="subject_id" type="xs:string"/>
+          <xs:element minOccurs="0" name="timestamp" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="versionRq">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="versionRs">
+    <xs:complexContent>
+      <xs:extension base="tns:baseResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="signupRq">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="external_reference" type="xs:string"/>
+      <xs:element minOccurs="0" name="external_passkey" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="options" type="tns:signupOption"/>
+      <xs:element minOccurs="0" name="length" type="xs:int"/>
+      <xs:element name="ttl_seconds" type="xs:int"/>
+      <xs:element minOccurs="0" name="callback_url" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="signupRs">
+    <xs:complexContent>
+      <xs:extension base="tns:baseResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="external_reference" type="xs:string"/>
+          <xs:element minOccurs="0" name="signup_code" type="xs:string"/>
+          <xs:element minOccurs="0" name="signup_image" type="xs:base64Binary"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="authCancelRq">
+    <xs:sequence>
+      <xs:element name="auth_id" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="authCancelRs">
+    <xs:complexContent>
+      <xs:extension base="tns:baseResponse">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="notificationRq">
+    <xs:sequence>
+      <xs:element name="subject_id" type="xs:string"/>
+      <xs:element minOccurs="0" name="notification_type" type="xs:string"/>
+      <xs:element name="text" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="notificationRs">
+    <xs:complexContent>
+      <xs:extension base="tns:baseResponse">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="registerRq">
+    <xs:sequence>
+      <xs:element name="subject_id" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="registerRs">
+    <xs:complexContent>
+      <xs:extension base="tns:baseResponse">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="unregisterRq">
+    <xs:sequence>
+      <xs:element name="subject_id" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="unregisterRs">
+    <xs:complexContent>
+      <xs:extension base="tns:baseResponse">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="buttonRole">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="positive"/>
+      <xs:enumeration value="negative"/>
+      <xs:enumeration value="neutral"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="multiAuthType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="individual"/>
+      <xs:enumeration value="fused"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="authType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="auth"/>
+      <xs:enumeration value="multi_auth_parent"/>
+      <xs:enumeration value="multi_auth_child"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="signupOption">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="no_qr_code"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="multi_auth_commit" nillable="true" type="tns:multiAuthCommitRq"/>
+  <xs:element name="multi_auth_commitResponse" nillable="true" type="tns:multiAuthCommitRs"/>
+  <xs:element name="auth" nillable="true" type="tns:authRq"/>
+  <xs:element name="authResponse" nillable="true" type="tns:authRs"/>
+  <xs:element name="subject_info" nillable="true" type="tns:subjectInfoRq"/>
+  <xs:element name="subject_infoResponse" nillable="true" type="tns:subjectInfoRs"/>
+  <xs:element name="otp_verify" nillable="true" type="tns:otpVerifyRq"/>
+  <xs:element name="otp_verifyResponse" nillable="true" type="tns:otpVerifyRs"/>
+  <xs:element name="trust_token_verify" nillable="true" type="tns:trustTokenVerifyRq"/>
+  <xs:element name="trust_token_verifyResponse" nillable="true" type="tns:trustTokenVerifyRs"/>
+  <xs:element name="api_version" nillable="true" type="tns:versionRq"/>
+  <xs:element name="api_versionResponse" nillable="true" type="tns:versionRs"/>
+  <xs:element name="signup" nillable="true" type="tns:signupRq"/>
+  <xs:element name="signupResponse" nillable="true" type="tns:signupRs"/>
+  <xs:element name="auth_cancel" nillable="true" type="tns:authCancelRq"/>
+  <xs:element name="auth_cancelResponse" nillable="true" type="tns:authCancelRs"/>
+  <xs:element name="notify" nillable="true" type="tns:notificationRq"/>
+  <xs:element name="notifyResponse" nillable="true" type="tns:notificationRs"/>
+  <xs:element name="register" nillable="true" type="tns:registerRq"/>
+  <xs:element name="registerResponse" nillable="true" type="tns:registerRs"/>
+  <xs:element name="unregister" nillable="true" type="tns:unregisterRq"/>
+  <xs:element name="unregisterResponse" nillable="true" type="tns:unregisterRs"/>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="multi_auth_commit">
+    <wsdl:part element="tns:multi_auth_commit" name="multi_auth_commit">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="registerResponse">
+    <wsdl:part element="tns:registerResponse" name="registerResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="otp_verifyResponse">
+    <wsdl:part element="tns:otp_verifyResponse" name="otp_verifyResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="authResponse">
+    <wsdl:part element="tns:authResponse" name="authResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notifyResponse">
+    <wsdl:part element="tns:notifyResponse" name="notifyResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="register">
+    <wsdl:part element="tns:register" name="register">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="auth">
+    <wsdl:part element="tns:auth" name="auth">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="subject_info">
+    <wsdl:part element="tns:subject_info" name="subject_info">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="unregisterResponse">
+    <wsdl:part element="tns:unregisterResponse" name="unregisterResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="trust_token_verifyResponse">
+    <wsdl:part element="tns:trust_token_verifyResponse" name="trust_token_verifyResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="otp_verify">
+    <wsdl:part element="tns:otp_verify" name="otp_verify">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="trust_token_verify">
+    <wsdl:part element="tns:trust_token_verify" name="trust_token_verify">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="api_versionResponse">
+    <wsdl:part element="tns:api_versionResponse" name="api_versionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="multi_auth_commitResponse">
+    <wsdl:part element="tns:multi_auth_commitResponse" name="multi_auth_commitResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="api_version">
+    <wsdl:part element="tns:api_version" name="api_version">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="signup">
+    <wsdl:part element="tns:signup" name="signup">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="auth_cancel">
+    <wsdl:part element="tns:auth_cancel" name="auth_cancel">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notify">
+    <wsdl:part element="tns:notify" name="notify">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="auth_cancelResponse">
+    <wsdl:part element="tns:auth_cancelResponse" name="auth_cancelResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="unregister">
+    <wsdl:part element="tns:unregister" name="unregister">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="signupResponse">
+    <wsdl:part element="tns:signupResponse" name="signupResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="subject_infoResponse">
+    <wsdl:part element="tns:subject_infoResponse" name="subject_infoResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="TransaktWs">
+    <wsdl:operation name="multi_auth_commit">
+      <wsdl:input message="tns:multi_auth_commit" name="multi_auth_commit">
+    </wsdl:input>
+      <wsdl:output message="tns:multi_auth_commitResponse" name="multi_auth_commitResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="auth">
+      <wsdl:input message="tns:auth" name="auth">
+    </wsdl:input>
+      <wsdl:output message="tns:authResponse" name="authResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="subject_info">
+      <wsdl:input message="tns:subject_info" name="subject_info">
+    </wsdl:input>
+      <wsdl:output message="tns:subject_infoResponse" name="subject_infoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="otp_verify">
+      <wsdl:input message="tns:otp_verify" name="otp_verify">
+    </wsdl:input>
+      <wsdl:output message="tns:otp_verifyResponse" name="otp_verifyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="trust_token_verify">
+      <wsdl:input message="tns:trust_token_verify" name="trust_token_verify">
+    </wsdl:input>
+      <wsdl:output message="tns:trust_token_verifyResponse" name="trust_token_verifyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="api_version">
+      <wsdl:input message="tns:api_version" name="api_version">
+    </wsdl:input>
+      <wsdl:output message="tns:api_versionResponse" name="api_versionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="signup">
+      <wsdl:input message="tns:signup" name="signup">
+    </wsdl:input>
+      <wsdl:output message="tns:signupResponse" name="signupResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="auth_cancel">
+      <wsdl:input message="tns:auth_cancel" name="auth_cancel">
+    </wsdl:input>
+      <wsdl:output message="tns:auth_cancelResponse" name="auth_cancelResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="notify">
+      <wsdl:input message="tns:notify" name="notify">
+    </wsdl:input>
+      <wsdl:output message="tns:notifyResponse" name="notifyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="register">
+      <wsdl:input message="tns:register" name="register">
+    </wsdl:input>
+      <wsdl:output message="tns:registerResponse" name="registerResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="unregister">
+      <wsdl:input message="tns:unregister" name="unregister">
+    </wsdl:input>
+      <wsdl:output message="tns:unregisterResponse" name="unregisterResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="api/2.0/transaktSoapBinding" type="tns:TransaktWs">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="multi_auth_commit">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="multi_auth_commit">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="multi_auth_commitResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="auth">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="auth">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="authResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="subject_info">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="subject_info">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="subject_infoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="otp_verify">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="otp_verify">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="otp_verifyResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="trust_token_verify">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="trust_token_verify">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="trust_token_verifyResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="api_version">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="api_version">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="api_versionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="signup">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="signup">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="signupResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="auth_cancel">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="auth_cancel">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="auth_cancelResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="notify">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="notify">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="notifyResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="register">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="register">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="registerResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="unregister">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="unregister">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="unregisterResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="api/2.0/transakt">
+    <wsdl:port binding="tns:api/2.0/transaktSoapBinding" name="transakt_port">
+      <soap:address location="https://poc.sg.entersekt.com:9443/api/2.0/transakt"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

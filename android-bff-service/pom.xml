@@ -8,13 +8,17 @@
     <prerequisites>
         <maven>3.0.0</maven>
     </prerequisites>
-
+    <parent>
+        <artifactId>android-bff-service-parent</artifactId>
+        <groupId>com.nedbank.android</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <groupId>com.nedbank.android</groupId>
     <artifactId>android-bff-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Bff</name>
+    <name>android-bff-service</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,6 +43,11 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nedbank.android</groupId>
+            <artifactId>transakt-gateway-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
