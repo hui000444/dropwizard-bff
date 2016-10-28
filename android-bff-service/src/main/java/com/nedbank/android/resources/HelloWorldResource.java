@@ -13,9 +13,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Holder;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.Optional;
 
@@ -44,14 +47,18 @@ public class HelloWorldResource {
 
     @GET
     @Path("/validate")
-    public String validateToken(@QueryParam("token") Optional<String> token) {
-        if (token != null) {
+    public String validateToken(@Context HttpHeaders headers) {
+        List<String> tokens = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+
+        if (tokens != null && tokens.size() > 0) {
+            String token  = tokens.get(0).split("\\s+")[1];
+
             LOGGER.info("Received a token: {}", token);
 
             TransaktWs transaktWs = new Api_002f20_002fTransakt().getTransaktPort();
-            Holder<ResponseResult> result = new Holder<ResponseResult>();
-            Holder<String> subjectId = new Holder<String>();
-            Holder<String> timeStamp = new Holder<String>();
+            Holder<ResponseResult> result = new Holder<>();
+            Holder<String> subjectId = new Holder<>();
+            Holder<String> timeStamp = new Holder<>();
 
             try {
                 ((BindingProvider) transaktWs).getRequestContext().put(
@@ -59,9 +66,10 @@ public class HelloWorldResource {
                 ((BindingProvider) transaktWs).getRequestContext().put(
                         BindingProvider.PASSWORD_PROPERTY, "Y45wnecS");
 
-                transaktWs.trustTokenVerify(token.get(), result, subjectId, timeStamp);
+                transaktWs.trustTokenVerify(token, result, subjectId, timeStamp);
             } catch (Exception ex) {
-                LOGGER.error(ex.getMessage());
+                LOGGER.error("Error", ex);
+                System.out.println(ex.toString());
             }
 
             return result.value.getCode() + ":" + result.value.getMessage();
