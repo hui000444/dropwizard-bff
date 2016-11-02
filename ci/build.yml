@@ -15,5 +15,5 @@ outputs:
 
 run:
   path: mvn
-  args: [package]
+  args: [test, package]
   dir: ./android-bff
