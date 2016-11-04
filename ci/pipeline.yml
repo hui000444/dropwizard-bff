@@ -1,11 +1,10 @@
 ---
-jobs:
-  - name: build-bff
-    plan:
-      - get: android-bff
-        trigger: true
-      - task: build
-        file: android-bff/ci/build.yml
+resource_types:
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
+    tag: latest
 
 resources:
   - name: android-bff
@@ -14,55 +13,23 @@ resources:
       uri: git@178.62.32.180:Nedbank/pwealth-android-bff.git
       branch: master
       skip_ssl_checking: true
-      private_key: |
-        -----BEGIN RSA PRIVATE KEY-----
-        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
-        -----END RSA PRIVATE KEY-----
+      private_key: {{DEPLOY_KEY}}
+
+  - name: notify-slack
+    type: slack-notification
+    source:
+      url: https://hooks.slack.com/services/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
+
+jobs:
+  - name: build-bff
+    plan:
+      - get: android-bff
+        trigger: true
+      - task: build
+        file: android-bff/ci/build.yml
+      - put: notify-slack
+        text: |
+          The build had a result. Check it out at:
+            http://my.concourse.url/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME
+          or at:
+            http://my.concourse.url/builds/$BUILD_ID
