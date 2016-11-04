@@ -10,7 +10,7 @@ resources:
   - name: android-bff
     type: git
     source:
-      uri: git@178.62.32.180:Nedbank/pwealth-android-bff.git
+      uri: ssh://git@188.166.155.119:2222/Nedbank/pwealth-android-bff.git
       branch: master
       skip_ssl_checking: true
       private_key: {{DEPLOY_KEY}}
