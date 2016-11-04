@@ -28,8 +28,9 @@ jobs:
       - task: build
         file: android-bff/ci/build.yml
       - put: notify-slack
-        text: |
-          The build had a result. Check it out at:
-            http://my.concourse.url/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME
-          or at:
-            http://my.concourse.url/builds/$BUILD_ID
+        params:
+          text: |
+            The build had a result. Check it out at:
+              http://my.concourse.url/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME
+            or at:
+              http://my.concourse.url/builds/$BUILD_ID
