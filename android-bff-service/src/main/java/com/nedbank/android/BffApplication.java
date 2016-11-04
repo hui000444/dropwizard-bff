@@ -1,14 +1,12 @@
 package com.nedbank.android;
 
+import com.nedbank.android.health.TemplateHealthCheck;
+import com.nedbank.android.resources.HelloWorldResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-
-import com.nedbank.android.BffConfiguration;
-
-import com.nedbank.android.api.HelloWorld;
-import com.nedbank.android.health.TemplateHealthCheck;
-import com.nedbank.android.resources.HelloWorldResource;
+import io.federecio.dropwizard.swagger.SwaggerBundle;
+import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 
 public class BffApplication extends Application<BffConfiguration> {
 
@@ -23,7 +21,12 @@ public class BffApplication extends Application<BffConfiguration> {
 
     @Override
     public void initialize(final Bootstrap<BffConfiguration> bootstrap) {
-        // TODO: application initialization
+        bootstrap.addBundle(new SwaggerBundle<BffConfiguration>() {
+            @Override
+            protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(BffConfiguration sampleConfiguration) {
+                return sampleConfiguration.swaggerBundleConfiguration;
+            }
+        });
     }
 
     @Override

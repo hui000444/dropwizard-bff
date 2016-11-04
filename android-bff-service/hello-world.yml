@@ -27,3 +27,6 @@ logging:
       archivedFileCount: 7
       timeZone: UTC
       maxFileSize: 10MB
+
+swagger:
+  resourcePackage: com.nedbank.android
