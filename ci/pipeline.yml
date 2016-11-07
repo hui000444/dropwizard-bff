@@ -30,7 +30,5 @@ jobs:
       - put: notify-slack
         params:
           text: |
-            The build had a result. Check it out at:
-              http://my.concourse.url/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME
-            or at:
-              http://my.concourse.url/builds/$BUILD_ID
+            android-bff build completed. View the result at:
+            http://139.59.197.102:8080/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME
