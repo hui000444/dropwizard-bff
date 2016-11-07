@@ -2,10 +2,18 @@ package com.nedbank.android;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
-import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
+import io.dropwizard.bundles.assets.AssetsBundleConfiguration;
+import io.dropwizard.bundles.assets.AssetsConfiguration;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class BffConfiguration extends Configuration {
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+public class BffConfiguration extends Configuration implements AssetsBundleConfiguration {
+    @Valid
+    @NotNull
+    @JsonProperty
+    private final AssetsConfiguration assets = AssetsConfiguration.builder().build();
     @NotEmpty
     private String template;
 
@@ -32,6 +40,9 @@ public class BffConfiguration extends Configuration {
         this.defaultName = name;
     }
 
-    @JsonProperty("swagger")
-    public SwaggerBundleConfiguration swaggerBundleConfiguration;
+
+    @Override
+    public AssetsConfiguration getAssetsConfiguration() {
+        return assets;
+    }
 }

@@ -1,12 +1,15 @@
 package com.nedbank.android;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nedbank.android.health.TemplateHealthCheck;
 import com.nedbank.android.resources.HelloWorldResource;
 import io.dropwizard.Application;
+import io.dropwizard.bundles.assets.ConfiguredAssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.federecio.dropwizard.swagger.SwaggerBundle;
-import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
+import io.swagger.jaxrs.config.BeanConfig;
+import io.swagger.jaxrs.listing.ApiListingResource;
+import io.swagger.jaxrs.listing.SwaggerSerializers;
 
 public class BffApplication extends Application<BffConfiguration> {
 
@@ -21,22 +24,32 @@ public class BffApplication extends Application<BffConfiguration> {
 
     @Override
     public void initialize(final Bootstrap<BffConfiguration> bootstrap) {
-        bootstrap.addBundle(new SwaggerBundle<BffConfiguration>() {
-            @Override
-            protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(BffConfiguration sampleConfiguration) {
-                return sampleConfiguration.swaggerBundleConfiguration;
-            }
-        });
+        bootstrap.addBundle(new ConfiguredAssetsBundle("/webapp/", "/swagger/"));
     }
 
     @Override
     public void run(final BffConfiguration configuration, final Environment environment) {
-      final HelloWorldResource resource = new HelloWorldResource(configuration.getTemplate(), configuration.getDefaultName());
-       environment.jersey().register(resource);
+        environment.jersey().register(new SwaggerSerializers());
+        environment.jersey().register(new HelloWorldResource(configuration.getTemplate(), configuration.getDefaultName()));
+        environment.jersey().setUrlPattern("/api/*");
 
-       final TemplateHealthCheck templateCheck = new TemplateHealthCheck(configuration.getTemplate());
+        final TemplateHealthCheck templateCheck = new TemplateHealthCheck(configuration.getTemplate());
 
-       environment.healthChecks().register("template", templateCheck);
+        environment.healthChecks().register("template", templateCheck);
+        environment.getObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        initialSwagger(environment);
+    }
+
+    private void initialSwagger(Environment environment) {
+        environment.jersey().register(new ApiListingResource());
+        BeanConfig config = new BeanConfig();
+        config.setTitle("Android BFF");
+        config.setVersion("1.0.0");
+        config.setBasePath("/");
+        config.setSchemes(new String[]{"http"});
+        config.setResourcePackage(HelloWorldResource.class.getPackage().getName());
+        config.setScan(true);
     }
 
 }

@@ -6,10 +6,7 @@ import com.entersekt.sg.transakt.TransaktWs;
 import com.nedbank.android.api.HelloWorld;
 import com.codahale.metrics.annotation.Timed;
 import io.dropwizard.jersey.params.DateTimeParam;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +25,7 @@ import java.util.Optional;
 
 @Path("/hello-world")
 @Produces(MediaType.APPLICATION_JSON)
-@Api("/hello-world")
+@Api(value = "/hello-world", description = "bleh!!")
 public class HelloWorldResource {
     private final String template;
     private final String defaultName;
