@@ -1,6 +1,7 @@
 package com.nedbank.android;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.nedbank.android.api.HelloWorld;
 import com.nedbank.android.health.TemplateHealthCheck;
 import com.nedbank.android.resources.HelloWorldResource;
 import io.dropwizard.Application;
@@ -10,8 +11,12 @@ import io.dropwizard.setup.Environment;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jaxrs.listing.ApiListingResource;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 
 public class BffApplication extends Application<BffConfiguration> {
+
+    public static final String BASE_PATH = "/api/";
 
     public static void main(final String[] args) throws Exception {
         new BffApplication().run(args);
@@ -31,7 +36,7 @@ public class BffApplication extends Application<BffConfiguration> {
     public void run(final BffConfiguration configuration, final Environment environment) {
         environment.jersey().register(new SwaggerSerializers());
         environment.jersey().register(new HelloWorldResource(configuration.getTemplate(), configuration.getDefaultName()));
-        environment.jersey().setUrlPattern("/api/*");
+        environment.jersey().setUrlPattern(BASE_PATH);
 
         final TemplateHealthCheck templateCheck = new TemplateHealthCheck(configuration.getTemplate());
 
@@ -46,7 +51,7 @@ public class BffApplication extends Application<BffConfiguration> {
         BeanConfig config = new BeanConfig();
         config.setTitle("Android BFF");
         config.setVersion("1.0.0");
-        config.setBasePath("/");
+        config.setBasePath(BASE_PATH);
         config.setSchemes(new String[]{"http"});
         config.setResourcePackage(HelloWorldResource.class.getPackage().getName());
         config.setScan(true);

@@ -25,7 +25,7 @@ import java.util.Optional;
 
 @Path("/hello-world")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/hello-world", description = "bleh!!")
+@Api(value = "/hello-world")
 public class HelloWorldResource {
     private final String template;
     private final String defaultName;
