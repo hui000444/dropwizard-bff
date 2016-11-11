@@ -1,12 +1,13 @@
 package com.nedbank.android.resources;
 
+import com.codahale.metrics.annotation.Timed;
 import com.entersekt.sg.transakt.Api_002f20_002fTransakt;
 import com.entersekt.sg.transakt.ResponseResult;
 import com.entersekt.sg.transakt.TransaktWs;
 import com.nedbank.android.api.HelloWorld;
-import com.codahale.metrics.annotation.Timed;
-import io.dropwizard.jersey.params.DateTimeParam;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,8 +21,8 @@ import javax.ws.rs.core.MediaType;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Holder;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Path("/hello-world")
 @Produces(MediaType.APPLICATION_JSON)
@@ -46,7 +47,6 @@ public class HelloWorldResource {
         return new HelloWorld(counter.incrementAndGet(), value);
     }
 
-
     @GET
     @Path("/validate")
     @ApiImplicitParams({@ApiImplicitParam(name = "Authorization", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
@@ -54,7 +54,7 @@ public class HelloWorldResource {
         List<String> tokens = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
 
         if (tokens != null && tokens.size() > 0) {
-            String token  = tokens.get(0).split("\\s+")[1];
+            String token = tokens.get(0).split("\\s+")[1];
 
             LOGGER.info("Received a token: {}", token);
 

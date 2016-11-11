@@ -1,9 +1,9 @@
 package com.nedbank.android;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.nedbank.android.api.HelloWorld;
 import com.nedbank.android.health.TemplateHealthCheck;
 import com.nedbank.android.resources.HelloWorldResource;
+import com.nedbank.android.resources.ServerResource;
 import io.dropwizard.Application;
 import io.dropwizard.bundles.assets.ConfiguredAssetsBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -11,8 +11,6 @@ import io.dropwizard.setup.Environment;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jaxrs.listing.ApiListingResource;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
-import org.eclipse.jetty.server.handler.ContextHandler;
-import org.eclipse.jetty.server.handler.ResourceHandler;
 
 public class BffApplication extends Application<BffConfiguration> {
 
@@ -36,6 +34,7 @@ public class BffApplication extends Application<BffConfiguration> {
     public void run(final BffConfiguration configuration, final Environment environment) {
         environment.jersey().register(new SwaggerSerializers());
         environment.jersey().register(new HelloWorldResource(configuration.getTemplate(), configuration.getDefaultName()));
+        environment.jersey().register(new ServerResource(configuration.getTemplate(), configuration.getDefaultName()));
         environment.jersey().setUrlPattern(BASE_PATH);
 
         final TemplateHealthCheck templateCheck = new TemplateHealthCheck(configuration.getTemplate());

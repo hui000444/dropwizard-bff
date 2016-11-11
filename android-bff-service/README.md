@@ -25,3 +25,8 @@ You should get the the response: `{"id":1,"content":"Hello, hi!"}`
 
 1. Start application with `java -jar target/android-bff-service-1.0-SNAPSHOT.jar server hello-world.yml`
 2. Enter url `http://localhost:8080/swagger/index.html`
+
+## How to use docker to launch
+
+1. Build docker image with `docker build -t myBff .`
+2. Start docker with `docker run -p 8080:8080 myBff`
